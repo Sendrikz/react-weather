@@ -21,7 +21,11 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  cors: { credentials: true, origin: "http://localhost:3000" },
+});
 
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);

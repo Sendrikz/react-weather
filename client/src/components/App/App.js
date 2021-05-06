@@ -1,7 +1,7 @@
-import ExchangeRates from "components/ExchangeRates";
+import CurrentWeather from "components/CurrentWeather";
 
 const App = () => {
-  return <ExchangeRates />;
+  return <CurrentWeather />;
 };
 
 export default App;
