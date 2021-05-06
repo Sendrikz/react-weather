@@ -2,8 +2,8 @@ import React from "react";
 import { useQuery, gql } from "@apollo/client";
 
 const CURRENT_WEATHER = gql`
-  query {
-    currentWeather {
+  query GetCurrentWeather($city: String) {
+    currentWeather(city: $city) {
       city
       temperature
     }
@@ -11,7 +11,11 @@ const CURRENT_WEATHER = gql`
 `;
 
 const CurrentWeather = () => {
-  const props = useQuery(CURRENT_WEATHER);
+  const props = useQuery(CURRENT_WEATHER, {
+    variables: {
+      city: "Smolensk",
+    },
+  });
 
   const { loading, error, data } = props;
 
@@ -25,7 +29,7 @@ const CurrentWeather = () => {
   return (
     <div key={city}>
       <p>
-        {city}: {(temperature - 273.15).toFixed(2)}
+        {city}: {temperature}
       </p>
     </div>
   );

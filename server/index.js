@@ -1,5 +1,7 @@
+import { config } from "dotenv";
 import { ApolloServer, gql } from "apollo-server";
-import { weatherSample } from "./weather.js";
+import axios from "axios";
+config();
 
 const typeDefs = gql`
   type CurrentWeather {
@@ -8,16 +10,22 @@ const typeDefs = gql`
   }
 
   type Query {
-    currentWeather: CurrentWeather
+    currentWeather(city: String): CurrentWeather
   }
 `;
 
 const resolvers = {
   Query: {
-    currentWeather: () => ({
-      temperature: weatherSample.main.temp,
-      city: weatherSample.name,
-    }),
+    currentWeather: async (parent, args) => {
+      const { data = {} } = await axios.get(
+        `http://api.openweathermap.org/data/2.5/weather?q=${args.city}&appid=${process.env.API_KEY}`
+      );
+
+      return {
+        temperature: (data.main.temp - 273.15).toFixed(2),
+        city: data.name,
+      };
+    },
   },
 };
 
