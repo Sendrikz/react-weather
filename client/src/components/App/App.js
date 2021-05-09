@@ -1,18 +1,18 @@
 import React from "react";
-import CityWeather from "components/CityWeather";
+import CityWeatherContainer from "containers/CityWeatherContainer";
 import { Grid } from "@material-ui/core";
 
 const App = () => {
   return (
     <Grid container spacing={4}>
       <Grid item>
-        <CityWeather city="Smolensk" />
+        <CityWeatherContainer city="Smolensk" />
       </Grid>
       <Grid item>
-        <CityWeather city="Moscow" />
+        <CityWeatherContainer city="Moscow" />
       </Grid>
       <Grid item>
-        <CityWeather city="Kiev" />
+        <CityWeatherContainer city="Kiev" />
       </Grid>
     </Grid>
   );

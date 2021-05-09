@@ -1,7 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Avatar, Box, Card, CardContent, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+} from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import { capitalize } from "lodash";
 
 const WEEK_DAYS = {
@@ -28,11 +36,16 @@ const getDayString = (date) => {
   return `${formattedWeekDayName}, ${formattedHours}:${formattedMinutes}`;
 };
 
-const Title = ({ cityName = "", isLoading = false }) => {
+const Title = ({ cityName = "", onRefresh }) => {
   return (
-    <Typography variant="h5" component="h2">
-      {isLoading ? <Skeleton width="100%" /> : cityName}
-    </Typography>
+    <Box display="flex" justifyContent="space-between">
+      <Typography variant="h5" component="h2">
+        {cityName}
+      </Typography>
+      <IconButton onClick={onRefresh} size="small" color="inherit">
+        <RefreshIcon />
+      </IconButton>
+    </Box>
   );
 };
 
@@ -47,7 +60,11 @@ const DateString = ({ isLoading = false, date }) => {
 const WeatherIcon = ({ statusCode }) => {
   return (
     <Avatar
-      src={`http://openweathermap.org/img/wn/${statusCode}@2x.png`}
+      src={
+        statusCode
+          ? `http://openweathermap.org/img/wn/${statusCode}@2x.png`
+          : ""
+      }
       alt="weather"
       style={{
         height: "72px",
@@ -83,6 +100,7 @@ const CityWeatherCard = ({
   temperature = 0,
   statusCode = "",
   description = "",
+  onRefresh,
 }) => {
   return (
     <Card
@@ -91,7 +109,19 @@ const CityWeatherCard = ({
       }}
     >
       <CardContent>
-        <Title isLoading={isLoading} cityName={cityName} />
+        <Box>
+          {isLoading ? (
+            <Skeleton
+              style={{
+                maxWidth: "none",
+              }}
+            >
+              <Title cityName={cityName} onRefresh={onRefresh} />
+            </Skeleton>
+          ) : (
+            <Title cityName={cityName} onRefresh={onRefresh} />
+          )}
+        </Box>
         <DateString isLoading={isLoading} date={date} />
         <Box display="flex">
           {isLoading ? (
@@ -119,6 +149,7 @@ CityWeatherCard.propTypes = {
   date: PropTypes.instanceOf(Date),
   description: PropTypes.string,
   isLoading: PropTypes.bool,
+  onRefresh: PropTypes.func,
   statusCode: PropTypes.string,
   temperature: PropTypes.number,
 };
