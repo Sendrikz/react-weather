@@ -15,5 +15,7 @@ module.exports = {
   plugins: ["react"],
   rules: {
     "react/prop-types": [2, { skipUndeclared: true }],
+    "no-unused-vars": [1],
+    "no-constant-condition": [1],
   },
 };
